@@ -106,6 +106,32 @@ flowchart TD
 
 The four green leaves are exactly the four expected outputs: `[1,7]`, `[1,1,6]`, `[1,2,5]`, `[2,6]`.
 
+### Plain-text version (renders anywhere)
+
+```text
+solve(index=0, target=8, curr=[])
+│
+├── pick 1 (i=0) ─▶ curr=[1], target=7
+│      ├── pick 1 (i=1) ─▶ curr=[1,1], target=6
+│      │      └── pick 6 (i=4) ─▶ curr=[1,1,6], target=0 ✅ SAVE
+│      ├── pick 2 (i=2) ─▶ curr=[1,2], target=5
+│      │      └── pick 5 (i=3) ─▶ curr=[1,2,5], target=0 ✅ SAVE
+│      ├── pick 6 (i=4) ─▶ curr=[1,6], target=1   (no way to reach 0) ✗
+│      └── pick 7 (i=5) ─▶ curr=[1,7], target=0 ✅ SAVE
+│
+├── skip 1 (i=1)  ⛔ duplicate of i=0 at same level → continue
+│
+├── pick 2 (i=2) ─▶ curr=[2], target=6
+│      └── pick 6 (i=4) ─▶ curr=[2,6], target=0 ✅ SAVE
+│
+├── pick 5 (i=3) ─▶ curr=[5], target=3   (nothing left sums to 3) ✗
+├── pick 6 (i=4) ─▶ curr=[6], target=2   ✗
+├── pick 7 (i=5) ─▶ curr=[7], target=1   ✗
+└── pick 10 (i=6) ─▶ curr=[10], target=-2 🔴 target<0 → prune
+```
+
+**Result:** `[[1,1,6], [1,2,5], [1,7], [2,6]]` — matches the tree's ✅ leaves exactly.
+
 ---
 
 ## 📝 Line-by-Line Walkthrough
